@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0d0610">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Para Graziele ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Montserrat:wght@200;300&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overscroll-behavior:none}
+body{min-height:100vh;background:#0d0610;font-family:'Montserrat',sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+.stars,.glow,#petals{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.stars{z-index:0}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d) ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:var(--o1);transform:scale(1)}to{opacity:var(--o2);transform:scale(1.4)}}
+.glow{z-index:0;background:radial-gradient(circle at 50% 50%,rgba(180,50,100,.18) 0%,transparent 65%);animation:pulse 4s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.6;transform:scale(1)}to{opacity:1;transform:scale(1.08)}}
+#petals{z-index:1}
+.petal{position:absolute;pointer-events:none;animation:fall linear infinite;opacity:0}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:0}10%{opacity:.7}90%{opacity:.5}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}
+.container{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1.5rem;text-align:center}
+.title{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-style:italic;font-size:clamp(1.6rem,7vw,2.6rem);color:#f5d0e0;letter-spacing:.08em;margin-bottom:.3rem;animation:fadeUp 1.2s ease both}
+.sub{font-weight:200;font-size:clamp(.65rem,2.5vw,.8rem);letter-spacing:.35em;color:rgba(245,208,224,.45);text-transform:uppercase;margin-bottom:3rem;animation:fadeUp 1.4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.countdown{display:flex;gap:clamp(.6rem,2.5vw,1.6rem);margin-bottom:3.5rem;animation:fadeUp 1.6s ease both}
+.unit{display:flex;flex-direction:column;align-items:center}
+.sep{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,8vw,3rem);color:rgba(220,120,160,.4);line-height:1;padding-top:.2rem}
+.num{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:clamp(2.8rem,12vw,5rem);color:#f5d0e0;line-height:1;text-shadow:0 0 40px rgba(220,100,150,.5);min-width:2ch;display:block}
+.lbl{font-weight:200;font-size:clamp(.5rem,1.8vw,.65rem);letter-spacing:.3em;color:rgba(245,208,224,.4);text-transform:uppercase;margin-top:4px}
+.divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(220,120,160,.6),transparent);margin:0 auto 3rem;animation:fadeUp 1.8s ease both}
+.phrase-wrap{max-width:300px;animation:fadeUp 2s ease both}
+.phrase{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1rem,4.5vw,1.25rem);font-style:italic;font-weight:300;color:rgba(245,208,224,.75);line-height:1.8;transition:opacity .8s ease}
+.heart{display:inline-block;color:#c0446e;font-size:1.4rem;margin:2.5rem 0;animation:hb 1.4s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}14%{transform:scale(1.25)}28%{transform:scale(1)}42%{transform:scale(1.18)}70%{transform:scale(1)}}
+.date{font-weight:200;font-size:.65rem;letter-spacing:.3em;color:rgba(245,208,224,.25);text-transform:uppercase;margin-top:2.5rem;animation:fadeUp 2.2s ease both}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="glow"></div>
+<div id="petals"></div>
+<div class="container">
+  <p class="title">Para Graziele</p>
+  <p class="sub">contagem regressiva</p>
+  <div class="countdown">
+    <div class="unit"><span class="num" id="d">00</span><span class="lbl">dias</span></div>
+    <div class="sep">:</div>
+    <div class="unit"><span class="num" id="h">00</span><span class="lbl">horas</span></div>
+    <div class="sep">:</div>
+    <div class="unit"><span class="num" id="m">00</span><span class="lbl">min</span></div>
+    <div class="sep">:</div>
+    <div class="unit"><span class="num" id="s">00</span><span class="lbl">seg</span></div>
+  </div>
+  <div class="divider"></div>
+  <div class="phrase-wrap"><p class="phrase" id="ph">…</p></div>
+  <span class="heart">♥</span>
+  <p class="date">10 · 04 · 2026</p>
+</div>
+<script>
+(function(){
+  var sf=document.getElementById('stars');
+  var frag=document.createDocumentFragment();
+  for(var i=0;i<100;i++){
+    var el=document.createElement('div');
+    el.className='star';
+    var sz=(Math.random()*2.2+0.5).toFixed(1);
+    var o1=(Math.random()*.4+.1).toFixed(2);
+    var o2=(Math.random()*.5+.4).toFixed(2);
+    var dd=(Math.random()*4+2).toFixed(1)+'s';
+    el.style.cssText='width:'+sz+'px;height:'+sz+'px;top:'+(Math.random()*100).toFixed(1)+'%;left:'+(Math.random()*100).toFixed(1)+'%;--o1:'+o1+';--o2:'+o2+';--d:'+dd+';animation-delay:'+(Math.random()*5).toFixed(1)+'s';
+    frag.appendChild(el);
+  }
+  sf.appendChild(frag);
+
+  var pf=document.getElementById('petals');
+  var pc=['✿','❀','✽','❁','✾','⚘'];
+  var frag2=document.createDocumentFragment();
+  for(var j=0;j<16;j++){
+    var p=document.createElement('div');
+    p.className='petal';
+    p.textContent=pc[Math.floor(Math.random()*pc.length)];
+    var hue=Math.floor(Math.random()*40+320);
+    p.style.cssText='left:'+(Math.random()*100).toFixed(1)+'%;color:hsl('+hue+',70%,75%);animation-duration:'+(Math.random()*10+8).toFixed(1)+'s;animation-delay:'+(Math.random()*14).toFixed(1)+'s;font-size:'+(Math.random()*10+10).toFixed(0)+'px';
+    frag2.appendChild(p);
+  }
+  pf.appendChild(frag2);
+
+  var phrases=[
+    "Você tem um sorriso que ilumina qualquer ambiente que entra.",
+    "Sua presença transforma dias comuns em memórias especiais.",
+    "Há uma leveza em você que faz o mundo parecer mais bonito.",
+    "Você é daquelas pessoas raras que deixam tudo mais gentil.",
+    "Seus olhos guardam toda a delicadeza que o mundo precisa.",
+    "Estar perto de você é o lugar mais bonito que existe.",
+    "Você tem um jeito único de fazer tudo parecer possível.",
+    "A vida fica mais colorida quando você faz parte dela.",
+    "Você é incrível de um jeito que as palavras não conseguem descrever.",
+    "Sua alegria é contagiante e sua alma, verdadeiramente linda."
+  ];
+  var idx=0;
+  var phEl=document.getElementById('ph');
+  function show(){
+    phEl.style.opacity=0;
+    setTimeout(function(){phEl.textContent=phrases[idx];phEl.style.opacity=1;idx=(idx+1)%phrases.length;},800);
+  }
+  show();
+  setInterval(show,5000);
+
+  var dEl=document.getElementById('d'),hEl=document.getElementById('h'),mEl=document.getElementById('m'),sEl=document.getElementById('s');
+  function pad(n){return n<10?'0'+n:''+n;}
+  function tick(){
+    var diff=new Date('2026-04-10T00:00:00')-new Date();
+    if(diff<=0){dEl.textContent=hEl.textContent=mEl.textContent=sEl.textContent='00';return;}
+    var dd=Math.floor(diff/86400000);diff-=dd*86400000;
+    var hh=Math.floor(diff/3600000);diff-=hh*3600000;
+    var mm=Math.floor(diff/60000);diff-=mm*60000;
+    var ss=Math.floor(diff/1000);
+    dEl.textContent=pad(dd);hEl.textContent=pad(hh);mEl.textContent=pad(mm);sEl.textContent=pad(ss);
+  }
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
